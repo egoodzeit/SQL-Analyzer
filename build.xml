@@ -1,0 +1,36 @@
+<!-- This is the config file used by ant to compile your code.
+     You probably do not need to edit this file. -->
+	
+<project name="QueryCompare" default="package" basedir=".">
+	
+	<target name="clean" description="remove previously compiled code">
+	    <delete dir="classes"/>
+	    <delete dir="out"/>
+	</target>
+	
+	<target name="compile" depends="clean" 
+	   description="compile and deposit class files in classes directory">
+      <mkdir dir="classes"/>
+	  <javac srcdir="src" 
+	         fork="yes"
+	         classpath="lib/h2-1.3.170.jar"
+		     includeantruntime="false"
+	         destdir="classes">
+      </javac>
+    </target>
+    
+	<target name="package" depends="compile" 
+	  description="make an executable jar and put it in the out folder">
+	    <!-- Create the build directory structure used by compile -->
+      <mkdir dir="out"/>
+      <jar destfile="out/mcqc_gui.jar">
+        <fileset includes="**/*.class" dir="classes"/>
+        <zipfileset includes="**/*.class" src="lib/h2-1.3.170.jar"/>
+        <manifest>
+          <attribute name="Main-Class"
+              value="edu.rutgers.cs541.EntryPoint"/>
+        </manifest>
+      </jar>    
+    </target>
+    
+</project>	
